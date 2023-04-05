@@ -16,10 +16,7 @@ namespace ariel{
     // Constructor
     Game::Game(Player& player1, Player& player2)
     { 
-        if (player1.isEqual(player2))
-        {
-            throw invalid_argument("this is not a game to single player !");
-        }
+        
         if (player1.getOnGame())
         {
             throw invalid_argument(player1.getName() + "is allready in another war card game !");
@@ -79,6 +76,11 @@ namespace ariel{
 
     void Game::playTurn() 
     {
+        if (this->player1->isEqual(*this->player2))
+        {
+            throw invalid_argument("this is not a game to single player !");
+        }
+        
         stringstream turn;
         int counterWinnerPile =0;
         string winner = "none";
@@ -91,16 +93,14 @@ namespace ariel{
                 this->player1->setOnGame(false);
                 this->player2->setOnGame(false);
                 this->cashRegister.clear();
-                cout << "game over" << endl;
-                return;
+                throw invalid_argument("game over");
                 }
                 if(this->player1->cardesTaken() == this->player2->cardesTaken() && (this->player1->cardesTaken() + this->player2->cardesTaken() == 52))
                 {
                     this->player1->setOnGame(false);
                     this->player2->setOnGame(false);
                     this->cashRegister.clear();
-                    cout << "the game is over its a tie" << endl;
-                    return;
+                    throw invalid_argument("the game is over its a tie");
                 }
 
             }
@@ -274,7 +274,7 @@ namespace ariel{
         if(this->player2->cardesTaken() > this->player1->cardesTaken()) {cout << this->player2->getName() << endl;}
         else
         {
-            throw invalid_argument("there is no winners this time");
+            cout << "there is no winners this time" << endl;
         }
         
         
