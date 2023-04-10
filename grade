@@ -34,4 +34,3 @@ total=$((total + grade))
 total=$((total / i))
 printf "\n\nGrade: $total\n\n"
 
-
