@@ -15,7 +15,7 @@ namespace ariel
     // Constructor
     Game::Game(Player &player1, Player &player2)
     {
-
+        
         if (player1.getOnGame())
         {
             throw invalid_argument(player1.getName() + "is allready in another war card game !");
@@ -75,7 +75,7 @@ namespace ariel
 
     void Game::playTurn()
     {
-        if (&this->player1 == &this->player2)
+        if (this->player1 == this->player2)
         {
             throw invalid_argument("this is not a game to single player !");
         }
