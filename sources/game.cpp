@@ -75,7 +75,7 @@ namespace ariel
 
     void Game::playTurn()
     {
-        if (&player1 == & player2)
+        if (&this->player1 == &this->player2)
         {
             throw invalid_argument("this is not a game to single player !");
         }
