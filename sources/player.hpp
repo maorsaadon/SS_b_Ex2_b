@@ -13,7 +13,6 @@ namespace ariel{
       vector<Card> myPile;
       int ownCardCount;
       int counterTurnWin;
-      int id;
       bool onGame;
       
 
@@ -22,8 +21,6 @@ namespace ariel{
       Player(string name);
 
       string getName();
-      int getId();
-      bool isEqual(Player other);
       bool pileIsEmpty();
       void incOwnCardCount(int size);
       void placeBottom(Card card);

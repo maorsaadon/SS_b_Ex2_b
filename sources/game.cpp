@@ -75,7 +75,7 @@ namespace ariel
 
     void Game::playTurn()
     {
-        if (this->player1->isEqual(*this->player2))
+        if (&player1 == & player2)
         {
             throw invalid_argument("this is not a game to single player !");
         }
@@ -92,7 +92,7 @@ namespace ariel
             {
                 this->player1->setOnGame(false);
                 this->player2->setOnGame(false);
-                throw invalid_argument("the game is over its a tie");
+                throw invalid_argument("game over its a tie");
             }
         }
 

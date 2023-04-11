@@ -24,18 +24,7 @@ namespace ariel{
 	{
 		return this->name;
 	}
-
-	int Player::getId()
-	{
-		return this->id;
-	}
-
-	bool Player::isEqual(Player other)
-	{
-		if(this->name.compare(other.getName()) == 0 ) return true;
-		return false;
-	}
-
+	
 	bool Player::pileIsEmpty(){
 		return this->myPile.empty();
 	}
