@@ -156,9 +156,7 @@ namespace ariel
 
     int Game::buttle(int value1, int value2)
     {
-        if (value1 == value2)
-            return 0;
-        else if (value1 == 1 && value2 != 2)
+        if (value1 == 1 && value2 != 2)
             return 1;
         else if (value2 == 1 && value1 != 2)
             return 2;
@@ -166,6 +164,8 @@ namespace ariel
             return 1;
         else if (value2 > value1)
             return 2;
+        return 0;
+        
     }
 
     void Game::printLastTurn()
