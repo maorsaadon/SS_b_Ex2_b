@@ -13,7 +13,6 @@ namespace ariel{
       Player* player1; 
       Player* player2;
       vector<stringstream> log;
-      vector<Card> cashRegister;
       vector<Card> fullPile();
       void shuffle(vector<Card>& pile);
       void deal(vector<Card> pile);
@@ -26,7 +25,8 @@ namespace ariel{
     
       // Public methods
       void playTurn();
-      void printLastTurn();                                             
+      void printLastTurn(); 
+      int buttle (int value1, int value2);                                            
       void playAll();
       void printWiner();
       void printLog();
