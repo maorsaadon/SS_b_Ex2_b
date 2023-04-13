@@ -9,6 +9,11 @@
 #include <memory>
 using namespace std;
 
+//I used the following websites
+//https://cis.temple.edu/~wolfgang/cis542/Week02.pdf
+//https://github.com/Class-Warfare/War-Card-Game
+
+
 namespace ariel
 {
 
