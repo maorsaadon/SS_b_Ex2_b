@@ -16,6 +16,7 @@ namespace ariel
     Game::Game(Player &player1, Player &player2)
     {
         
+        // Check if both players are available to start a new game
         if (player1.getOnGame())
         {
             throw invalid_argument(player1.getName() + "is allready in another war card game !");
@@ -25,13 +26,17 @@ namespace ariel
             throw invalid_argument(player2.getName() + "is allready in another war card game !");
         }
 
+         // Set pointers to players and flag that they are currently playing the game
         this->player1 = &player1;
         this->player2 = &player2;
         this->player1->setOnGame(true);
         this->player2->setOnGame(true);
+        
+        // Start the game by dealing the cards
         deal(fullPile());
     }
 
+    // Creates a full deck of cards
     vector<Card> Game::fullPile()
     {
         //Create a Hand with a full deck of cards
@@ -50,10 +55,13 @@ namespace ariel
         return pile;
     }
 
+    // Shuffle the deck of cards
     void Game::shuffle(vector<Card> &pile)
     {
+        // Seed random number generator with current time and pile size
         srand((unsigned long)time(0) + pile.size());
-        //Select a new random location for each card
+        
+        // Shuffle by randomly selecting a new location for each card
         for (uint i = 0; i < pile.size(); i++)
         {
             unsigned long newIndex = (unsigned long)rand() % pile.size();
@@ -64,8 +72,10 @@ namespace ariel
 
     void Game::deal(vector<Card> pile)
     {
+        // Shuffle the pile before dealing
         shuffle(pile);
 
+        // Deal cards to each player's deck, alternating between players
         for (uint i = 0; i < pile.size() - 1; i++)
         {
             this->player1->placeBottom(pile.at(i++));
@@ -73,15 +83,20 @@ namespace ariel
         }
     }
 
+    // Play a single turn of the game
     void Game::playTurn()
     {
+        
+        // Check that the game has two players
         if (this->player1 == this->player2)
         {
             throw invalid_argument("this is not a game to single player !");
         }
 
+        // Check if both players have run out of cards
         if (this->player1->stacksize() == 0 && this->player2->stacksize() == 0)
         {
+             // Check if the game is over because one player has taken more cards than the other
             if (this->player1->cardesTaken() != this->player2->cardesTaken() && (this->player1->cardesTaken() + this->player2->cardesTaken() == 52))
             {
                 this->player1->setOnGame(false);
@@ -95,33 +110,51 @@ namespace ariel
                 throw invalid_argument("game over its a tie");
             }
         }
-
+        
+         // Create string streams for recording the turn's details and the winner
         stringstream turn1;
         stringstream turn2;
+        
+        // Initialize variables for tracking the number of cards the winner has taken
         int counterWinnerPile = 0;
         string winner = "none";
 
+        // Play one card from each player
         Card card1 = this->player1->play();
         Card card2 = this->player2->play();
+        
+        // Add the two cards to the counter for the winner pile
         counterWinnerPile += 2;
 
+        // If the two cards have the same value, initiate a "war"
         while ((buttle(card1.getValue(), card2.getValue()) == 0) && (this->player1->stacksize() != 0 && this->player2->stacksize() != 0))
         {
-
+            
+            // Play one card face down and one card face up from each player
             this->player1->play();
             this->player2->play();
+            
+            // Add the four cards to the counter for the winner pile
             counterWinnerPile += 2;
 
+            // Play another card from each player
             if (this->player1->stacksize() != 0 && this->player2->stacksize() != 0)
             {
                 card1 = player1->play();
                 card2 = player2->play();
+                
+                // Add the two cards to the counter for the winner pile
                 counterWinnerPile += 2;
+                
+                // Record the turn's details
                 turn1 << this->player1->getName() << " played " << card1.getValue() << " of " << card1.getSuit() << " " << this->player2->getName() << " played " << card2.getValue() << " of " << card2.getSuit() << ". " << winner << " wins.";
+                
+                 // Add the turn's details to the log
                 this->log.emplace_back(turn1.str());
             }
             else
             {
+                // If one player runs out of cards during a "war", the other player takes all the cards in the winner pile
                 this->player1->incOwnCardCount(counterWinnerPile / 2);
                 this->player1->incOwnCardCount(counterWinnerPile / 2);
                 counterWinnerPile = 0;
@@ -156,6 +189,7 @@ namespace ariel
 
     int Game::buttle(int value1, int value2)
     {
+        // Determine the winner of a battle based on the values of two cards
         if (value1 == 1 && value2 != 2)
             return 1;
         else if (value2 == 1 && value1 != 2)
@@ -164,25 +198,30 @@ namespace ariel
             return 1;
         else if (value2 > value1)
             return 2;
+        // If the values are equal, return 0 to indicate a tie
         return 0;
         
     }
 
     void Game::printLastTurn()
     {
+        // Check if there are any turns in the log
         if (this->log.size() == 0)
         {
             throw invalid_argument("The game is not start yet");
         }
+        // Print the last turn in the log
         cout << this->log.back().str() << endl;
     }
 
     void Game::playAll()
     {
+         // Check if both players are still in the game
         if (!(this->player1->getOnGame()) && !(this->player2->getOnGame()))
         {
             throw invalid_argument("game over");
         }
+        // Keep playing turns until one or both players lose
         while (this->player1->getOnGame() && this->player2->getOnGame())
         {
             playTurn();
@@ -191,11 +230,13 @@ namespace ariel
 
     void Game::printWiner()
     {
+        // Check if there are any turns in the log
         if (this->log.size() == 0)
         {
             throw invalid_argument("The game is not start yet");
         }
 
+        // Check which player won the game based on the number of cards they took
         if (this->player1->cardesTaken() > this->player2->cardesTaken())
         {
             cout << this->player1->getName() << endl;
@@ -209,12 +250,15 @@ namespace ariel
             cout << "there is no winners this time" << endl;
         }
     }
+    
     void Game::printLog()
     {
+        // Check if there are any turns in the log
         if (this->log.size() == 0)
         {
             throw invalid_argument("the game is not start yet");
         }
+         // Print all the turns in the log
         for (uint i = 0; i < this->log.size(); i++)
         {
             cout << this->log.at(i).str() << endl;
@@ -223,6 +267,7 @@ namespace ariel
 
     void Game::printStats()
     {
+        // Print statistics for each player
         stringstream ss1;
         ss1 << this->player1->getName() << " won " << this->player1->getCounterTurnWin() << " turns of " << this->log.size() << " and wons " << this->player1->cardesTaken() << " cards.";
         cout << ss1.str() << endl;

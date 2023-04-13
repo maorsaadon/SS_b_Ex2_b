@@ -10,12 +10,12 @@ namespace ariel{
     
     private:
       // Private members
-      Player* player1; 
-      Player* player2;
-      vector<stringstream> log;
-      vector<Card> fullPile();
-      void shuffle(vector<Card>& pile);
-      void deal(vector<Card> pile);
+      Player* player1; // pointer to player 1 object 
+      Player* player2; // pointer to player 2 object
+      vector<stringstream> log; // vector of stringstreams to store game log
+      vector<Card> fullPile(); // private method to generate a full deck of cards
+      void shuffle(vector<Card>& pile); // private method to shuffle a deck of cards
+      void deal(vector<Card> pile); // private method to deal cards to the players
       
 
     public:
@@ -24,13 +24,13 @@ namespace ariel{
       Game(Player& player1, Player& player2);
     
       // Public methods
-      void playTurn();
-      void printLastTurn(); 
-      int buttle (int value1, int value2);                                            
-      void playAll();
-      void printWiner();
-      void printLog();
-      void printStats();
+      void playTurn(); // method to play a single turn of the game
+      void printLastTurn(); // method to print the last turn played
+      int buttle (int value1, int value2);  // method to determine the winner of a round                                         
+      void playAll(); // method to play the entire game
+      void printWiner(); // method to print the winner of the game
+      void printLog(); // method to print the game log
+      void printStats(); // method to print the statistics of the game
                       
   };
 };
